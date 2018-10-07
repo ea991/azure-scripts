@@ -49,15 +49,15 @@ $vmNIC2 = New-AzureRmNetworkInterface -ResourceGroupName $RGName -Name lb-nic2-b
   -PrivateIpAddress 10.0.3.7 -Subnet $targetSubnet `
   -LoadBalancerBackendAddressPool $nrpLB.BackendAddressPools[0]
   -LoadBalancerInboundNatRule $nrpLB.InboundNatRules[1] #Use the second NAT Rule2
-  #Now just need to add the NICs to a VM configuration and create
+#Now just need to add the NICs to a VM configuration and create
 
-  #Add a NAT Rule to an existing NiC rather than at creation time
-  $nic = Get-AzureRmNetworkInterface -ResourceGroupName $RGName -Name "<nic name>" #how to get a NIC
-  $nic.IpConfigurations[0].LoadBalancerInboundNatRules.Add($nrpLB.InboundNatRules[0])
-  Set-AzureRmNetworkInterface -NetworkInterface $nic
+#Add a NAT Rule to an existing NiC rather than at creation time
+$nic = Get-AzureRmNetworkInterface -ResourceGroupName $RGName -Name "<nic name>" #how to get a NIC
+$nic.IpConfigurations[0].LoadBalancerInboundNatRules.Add($nrpLB.InboundNatRules[0])
+Set-AzureRmNetworkInterface -NetworkInterface $nic
 
-  #Add NAT rule to an existing Load Balancer
-  $nrpLB | Add-AzureRmLoadBalancerInboundNatRuleConfig -Name "RDP3" -FrontendIpConfiguration $frontEndIP `
-    -Protocol Tcp -FrontendPort 3443 -BackendPort 3389
+#Add NAT rule to an existing Load Balancer
+$nrpLB | Add-AzureRmLoadBalancerInboundNatRuleConfig -Name "RDP3" -FrontendIpConfiguration $frontEndIP `
+  -Protocol Tcp -FrontendPort 3443 -BackendPort 3389
 
 
